@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Form</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.8em;
+        }
+        #success-message {
+          color: green;
+          margin-top: 10px;
+          display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Form</h1>
+
+    <form id="myForm">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <span id="usernameError" class="error"></span><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <span id="emailError" class="error"></span><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <span id="passwordError" class="error"></span><br>
+
+        <button type="submit">Submit</button>
+        <p id="success-message">Form submitted successfully!</p>
+    </form>
+
+    <div id="interactiveDiv" style="background-color: lightblue; padding: 20px; margin-top: 20px;">
+        <p>Click the button to change the background color.</p>
+        <button id="colorButton">Change Color</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('myForm');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const usernameError = document.getElementById('usernameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const interactiveDiv = document.getElementById('interactiveDiv');
+        const colorButton = document.getElementById('colorButton');
+        const successMessage = document.getElementById('success-message');
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            if (username.value.trim() === '') {
+                usernameError.textContent = 'Username is required.';
+                isValid = false;
+            } else {
+                usernameError.textContent = '';
+            }
+
+            if (email.value.trim() === '') {
+                emailError.textContent = 'Email is required.';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                emailError.textContent = 'Invalid email format.';
+                isValid = false;
+            } else {
+                emailError.textContent = '';
+            }
+
+            if (password.value.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters.';
+                isValid = false;
+            } else {
+                passwordError.textContent = '';
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission if invalid
+            } else {
+                event.preventDefault(); // prevent actual submission.
+                successMessage.style.display = 'block'; //show success message.
+                form.reset(); // clear form
+                usernameError.textContent = ''; // clear errors.
+                emailError.textContent = '';
+                passwordError.textContent = '';
+            }
+        });
+
+        colorButton.addEventListener('click', function() {
+            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            interactiveDiv.style.backgroundColor = randomColor;
+        });
+    </script>
+</body>
+</html>
